@@ -1,15 +1,19 @@
 from mysql import connector
 from mysql.connector import Error
+from dotenv import load_dotenv
+import os
+
+load_dotenv()
 
 class conexao:
     def _conn(self):
         
         try:
             conexao = connector.connect(
-            host='148.113.211.197',
-            user='comtest_medico',
-            password='87nS~a*AS)pA',
-            database='comtest_langchain',
+            host=os.getenv('HOST'),
+            user=os.getenv('USER'),
+            password=os.getenv('PASSWORD'),
+            database=os.getenv('DATABASE'),
             use_pure=True
             )
         

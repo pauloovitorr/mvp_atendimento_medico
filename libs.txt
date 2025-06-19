@@ -1,0 +1,10 @@
+langchain
+langchain-community
+langchain_groq
+langchain_openai
+flask
+python-dotenv
+requests
+mysql-connector-python
+uvicorn
+ngrok

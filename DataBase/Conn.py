@@ -18,7 +18,6 @@ class Conexao:
             if conexao.is_connected():
                 conexao.autocommit = False
                 curso = conexao.cursor(dictionary=True)
-                print('sim')
                 return conexao, curso
             else:
                 print('Não conectou no banco de dados')

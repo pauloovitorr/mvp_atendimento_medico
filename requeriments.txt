@@ -6,3 +6,5 @@ ngrok
 mysql-connector-python
 requests
 flask
+openai
+pycryptodome

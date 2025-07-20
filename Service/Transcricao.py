@@ -4,6 +4,7 @@ from dotenv import load_dotenv
 import base64
 import uuid
 from datetime import datetime
+from openai import OpenAI
 
 load_dotenv()
 
@@ -60,3 +61,19 @@ class WhatsappAudioService:
         except Exception as e:
             print(f"Erro ao salvar o arquivo de áudio: {e}")
             return None
+        
+    def transcricao_audio(self,file_audio:str) -> str:
+        client = OpenAI(api_key= os.getenv('api_openai'))
+        with open(file_audio, "rb") as audio_file:
+            transcription = client.audio.transcriptions.create(
+                model="whisper-1",
+                file=audio_file,
+                response_format="text",
+                prompt=
+            "Você está transcrevendo áudios de um atendimento médico automatizado. "
+            "O paciente pode falar sintomas, dúvidas sobre saúde, ou pedir orientações simples. "
+            "Evite erros com termos médicos como: febre, pressão, consulta, receita, sintomas, dor de cabeça, etc."
+        
+            )
+        
+        return transcription

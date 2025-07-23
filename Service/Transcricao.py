@@ -9,7 +9,7 @@ from openai import OpenAI
 load_dotenv()
 
 
-class WhatsappAudioService:
+class WhatsappTranscriptionService:
     def __init__(self):
         self.server_url = os.getenv("server_url")
         self.instance = os.getenv("instance")
@@ -19,7 +19,7 @@ class WhatsappAudioService:
             "apikey": self.apikey
         }
 
-    def get_base64_audio(self, message_id: str) -> str | None:
+    def _get_base64(self, message_id: str) -> str | None:
        
         endpoint = f"{self.server_url}/chat/getBase64FromMediaMessage/{self.instance}"
         payload = {
@@ -42,7 +42,7 @@ class WhatsappAudioService:
             print(f"Erro ao obter base64 do áudio: {e}")
             return None
 
-    def salvar_base64_como_audio(self, base64_data: str, extensao="mp3") -> str:
+    def _salvar_base64_como_audio(self, base64_data: str, extensao="mp3") -> str:
         if not os.path.exists("Audios"):
             os.makedirs("Audios")
 
@@ -62,7 +62,7 @@ class WhatsappAudioService:
             print(f"Erro ao salvar o arquivo de áudio: {e}")
             return None
         
-    def transcricao_audio(self,file_audio:str) -> str:
+    def _transcricao_audio(self,file_audio:str) -> str:
         client = OpenAI(api_key= os.getenv('api_openai'))
         with open(file_audio, "rb") as audio_file:
             transcription = client.audio.transcriptions.create(
@@ -77,3 +77,23 @@ class WhatsappAudioService:
             )
         
         return transcription
+    
+    def _salvar_base64_como_imagem(self, base64_data: str, extensao="jpg") -> str:
+        if not os.path.exists("Images"):
+            os.makedirs("Images")
+
+    
+        if "," in base64_data:
+            base64_data = base64_data.split(",")[1]
+
+        timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+        nome_arquivo = f"imagem_{timestamp}_{uuid.uuid4().hex[:6]}.{extensao}"
+        caminho_arquivo = os.path.join("Images", nome_arquivo)
+
+        try:
+            with open(caminho_arquivo, "wb") as f:
+                f.write(base64.b64decode(base64_data))
+            return caminho_arquivo
+        except Exception as e:
+            print(f"Erro ao salvar o arquivo de imagem: {e}")
+            return None

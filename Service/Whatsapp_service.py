@@ -1,6 +1,6 @@
 import re,os
 from datetime import datetime
-from Service.Transcricao import WhatsappAudioService
+from Service.Transcricao import WhatsappTranscriptionService
 
 class WhatsappService:
     
@@ -57,18 +57,22 @@ class WhatsappService:
                         "Você poderia resumir a mensagem em um áudio mais curto ou digitar o que deseja?"
                     )
             
-            id_mensagem = data['data']['key']['id']
-            whatsapp_audio = WhatsappAudioService()
-            base64_audio = whatsapp_audio.get_base64_audio(id_mensagem)
-            caminho_audio_mp3 = whatsapp_audio.salvar_base64_como_audio(base64_audio)
-            texto_do_audio = whatsapp_audio.transcricao_audio(caminho_audio_mp3)
+            id_mensagem         = data['data']['key']['id']
+            whatsapp_audio      = WhatsappTranscriptionService()
+            base64_audio        = whatsapp_audio._get_base64(id_mensagem)
+            caminho_audio_mp3   = whatsapp_audio._salvar_base64_como_audio(base64_audio)
+            texto_do_audio      = whatsapp_audio._transcricao_audio(caminho_audio_mp3)
 
             return texto_do_audio
             
         elif tipo == 'imageMessage':
-            return mensagem['imageMessage']['url']
+            whatsapp_img        = WhatsappTranscriptionService()
+            base64_img          = whatsapp_img._get_base64(id_mensagem)
+            caminho_audio_mp3   = whatsapp_img._salvar_base64_como_imagem(base64_img)
+            
+            return 'Texto de imagens'
         else:
-            return None
+            return 'Desculpe, ainda não consigo processar esse tipo de arquivo. Por favor, envie uma mensagem de texto, áudio ou imagem simples.'
         
         
         

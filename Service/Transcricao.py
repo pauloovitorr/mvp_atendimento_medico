@@ -19,7 +19,7 @@ class WhatsappTranscriptionService:
             "apikey": self.apikey
         }
 
-    def _get_base64(self, message_id: str) -> str | None:
+    def get_base64(self, message_id: str) -> str | None:
        
         endpoint = f"{self.server_url}/chat/getBase64FromMediaMessage/{self.instance}"
         payload = {
@@ -42,7 +42,7 @@ class WhatsappTranscriptionService:
             print(f"Erro ao obter base64 do áudio: {e}")
             return None
 
-    def _salvar_base64_como_audio(self, base64_data: str, extensao="mp3") -> str:
+    def salvar_base64_como_audio(self, base64_data: str, extensao="mp3") -> str:
         if not os.path.exists("Audios"):
             os.makedirs("Audios")
 
@@ -62,7 +62,7 @@ class WhatsappTranscriptionService:
             print(f"Erro ao salvar o arquivo de áudio: {e}")
             return None
         
-    def _transcricao_audio(self,file_audio:str) -> str:
+    def transcricao_audio(self,file_audio:str) -> str:
         client = OpenAI(api_key= os.getenv('api_openai'))
         with open(file_audio, "rb") as audio_file:
             transcription = client.audio.transcriptions.create(
@@ -78,7 +78,7 @@ class WhatsappTranscriptionService:
         
         return transcription
     
-    def _salvar_base64_como_imagem(self, base64_data: str, extensao="jpg") -> str:
+    def salvar_base64_como_imagem(self, base64_data: str, extensao="jpg") -> str:
         if not os.path.exists("Images"):
             os.makedirs("Images")
 

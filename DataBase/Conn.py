@@ -6,7 +6,7 @@ from dotenv import load_dotenv
 load_dotenv()
 
 class Conexao:
-    def _conn(self):
+    def conn(self):
         try:
             conexao = connector.connect(
                 host = os.getenv('HOST'),

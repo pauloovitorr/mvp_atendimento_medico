@@ -4,11 +4,11 @@ from dotenv import load_dotenv
 from Service.Whatsapp_service import WhatsappService
 
 class WhatsappCtrl:
-    @staticmethod
-    def index():
+    def __init__(self):
+        self.service = WhatsappService()
+
+    def index(self):
         body = request.json
-        # print(body)
-        dados = WhatsappService._limpa_dados(body)
+        dados = self.service.limpa_dados(body)
         print(dados)
         return {"status": "ok"}, 200
-        

@@ -4,12 +4,11 @@ from Service.Transcricao import WhatsappTranscriptionService
 
 class WhatsappService:
     
-    @staticmethod
-    def _limpa_dados(data):
+    def limpa_dados(self,data):
         from_me     = data['data']['key']['fromMe']             
         if not from_me:
             
-            msg_conversa = WhatsappService.__extrair_conteudo(data)           
+            msg_conversa = self.__extrair_conteudo(data)           
                         
             num_medico     = data['sender']
             tell_conversa  = data['data']['key']['remoteJid']
@@ -37,8 +36,7 @@ class WhatsappService:
         else:
             return None
 
-    @staticmethod
-    def __extrair_conteudo(data):
+    def __extrair_conteudo(self,data):
         tipo        = data['data']['messageType']
         mensagem    = data['data']['message']
         id_mensagem = data['data']['key']['id']
@@ -59,16 +57,16 @@ class WhatsappService:
             
             id_mensagem         = data['data']['key']['id']
             whatsapp_audio      = WhatsappTranscriptionService()
-            base64_audio        = whatsapp_audio._get_base64(id_mensagem)
-            caminho_audio_mp3   = whatsapp_audio._salvar_base64_como_audio(base64_audio)
-            texto_do_audio      = whatsapp_audio._transcricao_audio(caminho_audio_mp3)
+            base64_audio        = whatsapp_audio.get_base64(id_mensagem)
+            caminho_audio_mp3   = whatsapp_audio.salvar_base64_como_audio(base64_audio)
+            texto_do_audio      = whatsapp_audio.transcricao_audio(caminho_audio_mp3)
 
             return texto_do_audio
             
         elif tipo == 'imageMessage':
             whatsapp_img        = WhatsappTranscriptionService()
-            base64_img          = whatsapp_img._get_base64(id_mensagem)
-            caminho_audio_mp3   = whatsapp_img._salvar_base64_como_imagem(base64_img)
+            base64_img          = whatsapp_img.get_base64(id_mensagem)
+            caminho_audio_mp3   = whatsapp_img.salvar_base64_como_imagem(base64_img)
             
             return 'Texto de imagens'
         else:

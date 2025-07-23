@@ -66,7 +66,7 @@ class WhatsappService:
         elif tipo == 'imageMessage':
             whatsapp_img        = WhatsappTranscriptionService()
             base64_img          = whatsapp_img.get_base64(id_mensagem)
-            caminho_audio_mp3   = whatsapp_img.salvar_base64_como_imagem(base64_img)
+            caminho_img         = whatsapp_img.salvar_base64_como_imagem(base64_img)
             
             return 'Texto de imagens'
         else:

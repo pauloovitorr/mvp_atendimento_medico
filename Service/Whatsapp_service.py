@@ -22,14 +22,15 @@ class WhatsappService:
             
             tipo_msg        = data['data']['messageType']
             # Convertendo timestamp para datetime
-            timestamp = datetime.fromtimestamp(int(timestamp_raw))
+            timestamp = datetime.fromtimestamp(timestamp_raw)
+            timestamp_convertido = timestamp.strftime('%Y-%m-%d %H:%M:%S')
 
             return {
                 'tell_conversa': tell_conversa_match ,
                 'num_medico': num_medico_match,
                 'mensagem': msg_conversa,
                 'tipo_msg': tipo_msg,
-                'timestamp': timestamp,
+                'date_time': timestamp_convertido,
                 'origem': origem
             }
             
@@ -48,7 +49,7 @@ class WhatsappService:
             seconds = data['data']['message']['audioMessage']['seconds']
             
             if seconds < 1:
-                return "Seu áudio veio em branco. Poderia repetir por gentileza?"
+                return "Seu áudio veio com problema. Poderia repetir por gentileza?"
             elif seconds > 30:
                 return (
                         "Recebi seu áudio, mas por enquanto consigo analisar apenas mensagens de até 30 segundos. "
@@ -66,11 +67,11 @@ class WhatsappService:
         elif tipo == 'imageMessage':
             whatsapp_img        = WhatsappTranscriptionService()
             base64_img          = whatsapp_img.get_base64(id_mensagem)
-            caminho_img         = whatsapp_img.salvar_base64_como_imagem(base64_img)
+            texto_imagem        = whatsapp_img.transcricao_imagem(base64_img)
             
-            return 'Texto de imagens'
+            return texto_imagem
         else:
-            return 'Desculpe, ainda não consigo processar esse tipo de arquivo. Por favor, envie uma mensagem de texto, áudio ou imagem simples.'
+            return 'Desculpe, ainda não consigo processar esse tipo de arquivo. Por favor, envie uma mensagem de texto, ou áudio.'
         
         
         

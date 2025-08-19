@@ -73,6 +73,4 @@ class WhatsappService:
         else:
             return 'Desculpe, ainda não consigo processar esse tipo de arquivo. Por favor, envie uma mensagem de texto, ou áudio.'
         
-        
-        
-        
+    

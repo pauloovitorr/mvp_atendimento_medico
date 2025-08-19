@@ -107,8 +107,8 @@ class WhatsappTranscriptionService:
                         "type": "text",
                         "text": (
                             "Você está transcrevendo **imagens enviadas por pacientes durante atendimentos médicos automatizados**. "
-                            "Essas imagens podem incluir **fotos de exames, receitas, anotações manuscritas, etiquetas de medicamentos, descrições de sintomas, resultados laboratoriais, entre outros documentos relacionados à saúde**. "
-                            "Seu papel é **apenas transcrever fielmente o texto visível na imagem**, mantendo a grafia original, mesmo que contenha erros. "
+                            "Essas imagens podem incluir **fotos de exames, receitas, anotações manuscritas, etiquetas de medicamentos, descrições de sintomas, resultados laboratoriais, feridas, machucados, problemas entre outros relacionados à saúde**. "
+                            "Seu papel é **apenas transcrever fielmente o texto visível na imagem**."
                             "É especialmente importante que termos médicos como: **febre, pressão, consulta, receita, sintomas, dor de cabeça, entre outros** sejam transcritos corretamente. "
                             "**Não interprete nem corrija** o conteúdo, apenas descreva o que você vê que é o que aparece na imagem."
                         )

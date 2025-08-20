@@ -10,8 +10,6 @@ class MedicoModel:
         try:
             conn, cursor = Conexao().conn()
             sql = 'SELECT * from medico where telefone = %s'
-
-            print(self.tell_conversa)
             
             dados_select = (self.tell_conversa,)
             cursor.execute(sql, dados_select)
@@ -33,5 +31,11 @@ class MedicoModel:
             
         except Exception as err:
             print('Erro: ' , err)
+            cursor.close()
+            conn.close()
+            return {
+                    "res":"Erro ao listar médico",
+                    "id_med": ''
+                }
              
            

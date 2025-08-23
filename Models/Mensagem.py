@@ -89,3 +89,36 @@ class MensagemModel:
                 "respondidas": [],
                 "nao_respondidas": []
             }
+
+    def atualiza_mensagem(self, ids, flag):
+        conn, cursor = None, None
+        try:
+            conn, cursor = Conexao().conn()
+            
+            placeholders = ','.join(['%s'] * len(ids))
+            sql = f'UPDATE mensagem SET respondido = %s WHERE id_men IN ({placeholders})'
+            
+            cursor.execute(sql, (flag, *ids))
+            conn.commit()
+            
+            cursor.close()
+            conn.close()
+            
+            return {
+                "res": "Mensagens atualizadas com sucesso!",
+                "ids_mensagens": ids
+            }
+            
+        except Exception as err:
+            print('err: ', err)
+            if conn:
+                conn.rollback()
+            if cursor:
+                cursor.close()
+            if conn:
+                conn.close()
+            
+            return {
+                "res": f"Erro ao atualizar mensagens: {err}",
+                "ids_mensagens": ''
+            }

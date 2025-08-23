@@ -9,7 +9,7 @@ load_dotenv()
 llm = ChatOpenAI(
     api_key=os.getenv('api_openai'),
     model='gpt-4o-mini',
-    temperature=0.2
+    temperature=0.7
 )
 
 class Assistent:
@@ -47,9 +47,10 @@ class Assistent:
                     Você é um assistente virtual do(a) Dr(a). {self.nome_medico}, {self.especialidade}, responsável por organizar o agendamento de consultas.
 
                     Regras:
-                    - Apresente-se sempre como assistente do Dr(a). {self.nome_medico}.
-                    - Coleta de informações: nome, telefone, data/hora preferencial e motivo da consulta (2–3 frases).
-                    - Não forneça diagnósticos ou receitas jamais.
+                    - Apresente-se sempre como assistente do Dr(a). {self.nome_medico}. Identifique que o nome é masculino ou feminino e ajuste a apresentação
+                    - Pergunte como você pode ajudar
+                    - Coleta de informações, para marcar uma consulta é necessário solicitar: nome, telefone, data/hora preferencial e motivo da consulta (2–3 frases).
+                    - Não forneça diagnósticos ou receitas jamais em nenhuma hipotese.
                     - Seja educado, cordial e confirme sempre se o paciente quer prosseguir.
                     - Agradeça se o paciente desistir.
 

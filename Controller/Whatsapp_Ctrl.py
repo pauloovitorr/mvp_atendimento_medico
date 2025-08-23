@@ -1,4 +1,4 @@
-import requests, time
+import requests, time, datetime
 from flask import request
 from dotenv import load_dotenv
 from Service.Whatsapp_service import WhatsappService
@@ -46,15 +46,14 @@ class WhatsappCtrl:
         )
         
         msg_model.cria_mensagem()
-        
         time.sleep(30)
              
         lista_msgs = msg_model.lista_mensagem()
         
-        print(lista_msgs)
+        if not lista_msgs['nao_respondidas']:      
+            return {"status": "ok"}, 200
         
-        print('\n\n ****************************************************************************************** \n\n')
-
+        
         # Instancia assistente com mensagens
         ia = Assistent(
             lista_medico['dados_med']['nome_med'],
@@ -63,6 +62,25 @@ class WhatsappCtrl:
             lista_msgs['nao_respondidas']
         )
         
-        print(ia.responde_msg())
+        resposta_ia = ia.responde_msg()
+        
+        if resposta_ia:
+            ids_msgs = [id['id_men'] for id in lista_msgs['nao_respondidas']]
+            resposta_atualizacao = msg_model.atualiza_mensagem(ids_msgs, 's')
+            
+            if resposta_atualizacao['res'] == 'Mensagens atualizadas com sucesso!':
+                agora = datetime.datetime.now()
+                data_formatada = agora.strftime("%Y-%m-%d %H:%M:%S")
+                
+                msg_ia = MensagemModel('ia', 'text', resposta_ia, 'gpt-4o-mini', data_formatada, id_conversa, 's')
+                res_cria_msg_ia = msg_ia.cria_mensagem()
+                
+                if res_cria_msg_ia['res'] == 'Mensagem criada com sucesso!': 
+                    return {"status": "ok"}, 200
+                
+                return {"status": "erro", "msg": "Falha ao criar mensagem"}, 500
+            
+            return {"status": "erro", "msg": "Falha ao atualizar mensagens"}, 500
 
-        return {"status": "ok"}, 200
+        return {"status": "erro", "msg": "Sem resposta da IA"}, 400
+

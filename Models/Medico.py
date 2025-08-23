@@ -21,12 +21,12 @@ class MedicoModel:
             if dados_med:
                 return {
                         "res":"Médico encontrado com sucesso",
-                        "id_med": dados_med[0]['id_med']
+                        "dados_med": dados_med[0]
                     }
             else:
                 return {
                         "res":"Médico não encontrado",
-                        "id_med": ''
+                        "dados_med": ''
                     }
             
         except Exception as err:
